@@ -1,3 +1,11 @@
+/*
+ * SportIdent code based on MeOS which is
+ * Copyright (C) 2009-2018 Melin Software HB
+ * under the GPLv3+ license.  Code is available at
+ * https://github.com/melinsoftware/meos/blob/master/code/SportIdent.cpp
+ * as of 2018/09/02
+ */
+
 package ca.orienteeringbc.smsradiocontrolserver;
 
 import android.app.Service;
