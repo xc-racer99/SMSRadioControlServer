@@ -164,25 +164,25 @@ public class SiRadioControlService extends Service {
             case CONTROL_EXTENDED:
             {
                 // Check and make sure index isn't greater than permitted
-                if (buf.length - index < 10)
+                if (buf.length - index < 11)
                     return;
 
-                int station = buf[index + 3] | buf[index + 2] << 8;
-                int shortCard = buf[index + 7] | buf[index + 6] << 8;
-                int series = buf[index + 5];
-                int card = buf[index + 7] | buf[index + 6] << 8 | buf[index + 5] << 16 | buf[index + 4] << 24;
+                int controlNum = buf[index + 4] | buf[index + 3] << 8;
+                int shortCard = buf[index + 8] | buf[index + 7] << 8;
+                int series = buf[index + 6];
+                int card = buf[index + 8] | buf[index + 7] << 8 | buf[index + 6] << 16 | buf[index + 5] << 24;
 
                 if (series <= 4 && series >= 1)
                     card = shortCard + 100000 * series;
 
                 int time = 0;
-                if ((buf[index + 8] & 0x1) == 0x1)
+                if ((buf[index + 9] & 0x1) == 0x1)
                     time = 3600 * 12;
-                time += buf[index + 10] | buf[index + 9] << 8;
+                time += buf[index + 11] | buf[index + 10] << 8;
 
                 sendSms(card, time);
 
-                index += 10;
+                index += 11;
 
                 break;
             }
