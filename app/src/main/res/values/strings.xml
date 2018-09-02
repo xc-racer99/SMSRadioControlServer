@@ -4,7 +4,7 @@
 
     <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
+    <!-- General settings -->
     <string name="pref_header_general">General</string>
 
     <string name="pref_phone_number">Phone Number</string>
@@ -17,5 +17,6 @@
         <item>384000</item>
         <item>4800</item>
     </string-array>
+    <string name="pref_control_number">Control Number</string>
 
 </resources>
