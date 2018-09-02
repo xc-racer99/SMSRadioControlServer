@@ -194,7 +194,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("remote_phone_number"));
             bindPreferenceSummaryToValue(findPreference("si_station_baud"));
-            bindPreferenceSummaryToValue(findPreference("si_control_number"));
         }
 
         @Override

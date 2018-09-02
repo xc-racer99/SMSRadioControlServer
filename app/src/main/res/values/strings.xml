@@ -17,7 +17,6 @@
         <item>38400</item>
         <item>4800</item>
     </string-array>
-    <string name="pref_control_number">Control Number</string>
 
     <string name="sms_permission_denied">SMS permission is required for the app to work properly</string>
 

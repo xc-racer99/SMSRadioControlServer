@@ -188,7 +188,7 @@ public class SiRadioControlService extends Service {
                     time = 3600 * 12;
                 time += buf[index + 11] | buf[index + 10] << 8;
 
-                sendSms(card, time);
+                sendSms(controlNum, card, time);
 
                 index += 11;
 
@@ -216,8 +216,7 @@ public class SiRadioControlService extends Service {
         parseInput(buf, index);
     }
 
-    private void sendSms(int card, int time) {
-        int control = Integer.parseInt(sharedPreferences.getString("si_control_number", "0"));
+    private void sendSms(int control, int card, int time) {
         String msg = "SMSRC " + control + " " + card + " " + time;
 
         Log.d(TAG, "Sending msg " + msg);
