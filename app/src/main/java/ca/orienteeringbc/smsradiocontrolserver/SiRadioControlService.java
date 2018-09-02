@@ -28,6 +28,7 @@ public class SiRadioControlService extends Service {
     public static final char START_TX = 0x2;
     public static final char CONTROL_EXTENDED = 0xd3;
     public static final char CONTROL_NORMAL = 0x53;
+    public static final char END_TX = 0x3;
 
     private static UsbSerialPort sPort = null;
 
@@ -48,7 +49,7 @@ public class SiRadioControlService extends Service {
 
                 @Override
                 public void onNewData(final byte[] data) {
-                    parseInput(byteArrayToUnsignedIntArray(data));
+                    parseInput(byteArrayToUnsignedIntArray(data), 0);
                 }
             };
 
@@ -144,22 +145,28 @@ public class SiRadioControlService extends Service {
     private int[] byteArrayToUnsignedIntArray(byte[] in) {
         int out[] = new int[in.length];
         for (int i = 0; i < in.length; i++)
-            out[i] = (char) in[i] & 0xff;;
+            out[i] = (char) in[i] & 0xff;
         return out;
     }
 
-    private void parseInput(int[] buf) {
-        int index;
-        for (index = 0; index < buf.length; index++) {
+    private void parseInput(int[] buf, int index) {
+        for (; index < buf.length; index++) {
             if (buf[index] == START_TX)
                 break;
         }
 
-        Log.e(TAG, "buffer starts with " + (int) buf[index] + " " + (int) buf[index + 1] + " " + (int) buf[index + 2] + " index is " + index);
+        if (index >= buf.length)
+            return;
+
+        Log.e(TAG, "buffer starts with " + buf[index] + " " + buf[index + 1] + " " + buf[index + 2] + " index is " + index);
 
         switch (buf[index + 1]) {
             case CONTROL_EXTENDED:
             {
+                // Check and make sure index isn't greater than permitted
+                if (buf.length - index < 10)
+                    return;
+
                 int station = buf[index + 3] | buf[index + 2] << 8;
                 int shortCard = buf[index + 7] | buf[index + 6] << 8;
                 int series = buf[index + 5];
@@ -174,6 +181,9 @@ public class SiRadioControlService extends Service {
                 time += buf[index + 10] | buf[index + 9] << 8;
 
                 sendSms(card, time);
+
+                index += 10;
+
                 break;
             }
             case CONTROL_NORMAL:
@@ -188,7 +198,14 @@ public class SiRadioControlService extends Service {
             }
         }
 
-        // TODO - See if we received multiple messages together
+        // Find end of TX
+        for (; index < buf.length; index++) {
+            if (buf[index] == END_TX)
+                break;
+        }
+        index++;
+
+        parseInput(buf, index);
     }
 
     private void sendSms(int card, int time) {
