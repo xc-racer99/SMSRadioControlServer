@@ -10,11 +10,11 @@
     <string name="pref_phone_number">Phone Number</string>
     <string name="pref_baud_rate">Baud Rate</string>
     <string-array name="pref_baud_rate_titles">
-        <item>384000</item>
+        <item>38400</item>
         <item>4800</item>
     </string-array>
     <string-array name="pref_baud_rate_values">
-        <item>384000</item>
+        <item>38400</item>
         <item>4800</item>
     </string-array>
     <string name="pref_control_number">Control Number</string>
